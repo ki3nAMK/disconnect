@@ -1,0 +1,15 @@
+services:
+  geton-api:
+    image: kndev2004/mxh:geton-api-main-edb1606faa84e6e77fd97bbbb497390b6a58ceca
+    container_name: geton-api
+    restart: always
+    ports:
+      - 3333:3333
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "256M"
