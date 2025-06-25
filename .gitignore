@@ -39,7 +39,6 @@ lerna-debug.log*
 
 #backup data base
 /assets/backup
-.env
 public/assets.zip
 public/
 public/miniGameImages.zip
