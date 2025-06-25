@@ -1,6 +1,6 @@
 services:
   geton-api:
-    image: kndev2004/mxh:geton-api-main-edb1606faa84e6e77fd97bbbb497390b6a58ceca
+    image: kndev2004/mxh:geton-api-main-2fc0bf379b00f15f19ea509bbdb3dc16c5f71d29
     container_name: geton-api
     restart: always
     ports:
