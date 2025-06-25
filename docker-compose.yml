@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    command: npm run start:dev
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "256M"
+
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=160.191.88.192:6379
+    ports:
+      - 8088:8081
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge

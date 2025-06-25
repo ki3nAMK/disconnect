@@ -1,0 +1,33 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  before_script:
+    - apk update && apk add openssh-client bash
+  script:
+    - eval $(ssh-agent -s)
+    - if [ "$CI_COMMIT_REF_NAME" == "develop" ]; then
+      SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY_DEV;
+      SSH_SERVER_IP=$SSH_SERVER_IP_DEV;
+      elif [ "$CI_COMMIT_REF_NAME" == "staging" ]; then
+      SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY_STAGING;
+      SSH_SERVER_IP=$SSH_SERVER_IP_STAGING;
+      fi
+    - echo "$SSH_PRIVATE_KEY" > /tmp/deploy_key
+    - chmod 600 /tmp/deploy_key
+    - ssh-add /tmp/deploy_key
+    - rm /tmp/deploy_key
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -H $SSH_SERVER_IP >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - >
+      ssh $SSH_USER@$SSH_SERVER_IP
+      "cd ${PATH_TO_PROJECT};
+      git pull origin $CI_COMMIT_REF_NAME;
+      npm install --legacy-peer-deps;
+      npm run build;
+      pm2 restart $PM2_NAME;"
+  only:
+    - develop
+    - staging

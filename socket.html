@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Client</title>
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+  <script>
+    const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzg5Y2Y3MWU1ODU2NzI1YzJlYmNkOTYiLCJ1dWlkQWNjZXNzVG9rZW4iOiIzZGJiNzk5MS1mNzVhLTQ0YTEtOTI4ZC1iZDZlNjdiOTU0ZTEiLCJpYXQiOjE3NDkwMjQ1NzEsImV4cCI6MTc4NTAyNDU3MX0.gyc1pSsk-DWvlIyEFzDBse7d06Zh9EYMdvdf0w-rvRhvQKtThRHag5Jj9VAvkUsbAcgBcKzQxsJBsoOC56QWvZrc-lUZCObwEW2Ms_Gaa9zumApnwsjCtEu3k9USm_64GNGZm0fF9RLXD2jcJ51VqJtuZN9d6K60WUY40MV901DbIzhEenoldgkWsZHkls9mdm61bKTK8vX5S20HLtWpEzckWaAMww00NFuMZwlusjC-07PIWNBKxOM0x0B1PbgzEaNCAsJNLav5j0_oeYOPxYWxiwV8lSnHe0UYcSXnnyk5aSLaBYZKFV2ETEyG5R8enlmLTSuLlzEJq6NMKDZmwg'; // Replace with a valid JWT token
+
+    const socket = io('http://localhost:3335', {
+      auth: {
+        token: token
+      }
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+
+      // Join a room
+      socket.emit('joinRoom', 'room1');
+    });
+
+    socket.on('message', (data) => {
+      console.log('Received message:', data);
+      document.getElementById('messages').innerHTML += `<p>${JSON.stringify(data)}</p>`;
+    });
+
+    function sendMessage() {
+      const message = document.getElementById('messageInput').value;
+      socket.emit('message', { room: 'room1', message: message });
+      document.getElementById('messageInput').value = '';
+    }
+  </script>
+</head>
+<body>
+<input type="text" id="messageInput" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
+<div id="messages"></div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+    "name": "ton_proof",
+    "proof": {
+        "timestamp": 1749182777,
+        "domain": {
+            "lengthBytes": 47,
+            "value": "test-youtube.s3-website-us-east-1.amazonaws.com"
+        },
+        "signature": "g/jTPECs+k22F30vrX2eJBPV84oH2KRltp+mFg6BY4lh/7NvYesrOwpCQnFHLips/MF+g7Bsl2Lwxt6jAnCECA==",
+        "payload": "{\"timestamp\":1749182766165,\"session\":\"4d138377-4295-4b2b-b342-0158ec008ae8\"}"
+    }
+}
